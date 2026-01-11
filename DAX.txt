@@ -1,0 +1,124 @@
+DateTable =
+ADDCOLUMNS (
+    CALENDAR ( DATE ( 2019, 1, 1 ), DATE ( 2024, 12, 31 ) ),
+    "Year", YEAR ( [Date] ),
+    "Month", FORMAT ( [Date], "MMMM" ),
+    "Month_sh", FORMAT ( [Date], "MMM" ),
+    "MonthNumber", MONTH ( [Date] ),
+    "Quarter", "Q" & QUARTER ( [Date] ),
+    "QuarterNumber", QUARTER ( [Date] ),
+    "Day", FORMAT ( [Date], "dddd" ),
+    "DayNumber", WEEKDAY ( [Date], 2 ),
+    "WeekNumber", WEEKNUM ( [Date] ),
+    "WeekDayShort", FORMAT ( [Date], "ddd" )
+)
+
+------------------------------------------------------------------------------------------------------------------------
+
+Patients = COUNT('Fact Hospital'[Patient ID])
+
+------------------------------------------------------------------------------------------------------------------------
+
+%YoY Patients =
+VAR LastYear =
+    CALCULATE (
+        [Patients],
+        SAMEPERIODLASTYEAR ( 'DateTable'[Date] )
+    )
+VAR YoY =
+    DIVIDE ( [Patients] - LastYear, LastYear, 0 )
+RETURN
+    FORMAT ( YoY, "0%" )
+        & IF ( YoY > 0, " ▲", IF ( YoY < 0, " ▼", " —" ) )
+
+------------------------------------------------------------------------------------------------------------------------
+
+Total Billing Amount = SUM('Fact Hospital'[Billing Amount])
+
+------------------------------------------------------------------------------------------------------------------------		
+		
+%YoY Billing =
+VAR LastYear =
+    CALCULATE (
+        [Total Billing Amount],
+        SAMEPERIODLASTYEAR ( 'DateTable'[Date] )
+    )
+VAR YoY =
+    DIVIDE ( [Total Billing Amount] - LastYear, LastYear, 0 )
+RETURN
+    FORMAT ( YoY, "0%" )
+        & IF ( YoY > 0, " ▲", IF ( YoY < 0, " ▼", " —" ) )
+		
+------------------------------------------------------------------------------------------------------------------------
+
+Avg Length Of Stay = AVERAGE('Fact Hospital'[Length of Stay])
+		
+------------------------------------------------------------------------------------------------------------------------
+		
+%YoY LOS =
+VAR LastYear =
+    CALCULATE (
+        [Avg Length of Stay],
+        SAMEPERIODLASTYEAR ( 'DateTable'[Date] )
+    )
+VAR YoY =
+    DIVIDE ( [Average Length of Stay] - LastYear, LastYear, 0 )
+RETURN
+    FORMAT ( YoY, "0%" )
+        & IF ( YoY > 0, " ▲", IF ( YoY < 0, " ▼", " —" ) )
+
+------------------------------------------------------------------------------------------------------------------------		
+		
+Length of Stay =
+DATEDIFF (
+    'Fact Hospital'[Date of Admission],
+    'Fact Hospital'[Discharge Date],
+    DAY
+)
+
+------------------------------------------------------------------------------------------------------------------------
+
+Most Common Condition =
+VAR ConditionTable =
+    SUMMARIZE (
+        'Dim Patient',
+        'Dim Patient'[Condition],
+        "PatientCount", COUNT ( 'Dim Patient'[Patient ID] )
+    )
+RETURN
+    MAXX (
+        TOPN ( 1, ConditionTable, [PatientCount], DESC ),
+        'Dim Patient'[Condition]
+    )
+	
+------------------------------------------------------------------------------------------------------------------------
+
+Selected Date Range = 
+VAR _minDate = CALCULATE(MIN('DateTable'[Date]), ALLSELECTED('DateTable'))
+VAR _maxDate = CALCULATE(MAX('DateTable'[Date]), ALLSELECTED('DateTable'))
+RETURN
+IF(
+    NOT ISBLANK(_minDate) && NOT ISBLANK(_maxDate),
+    "📅 " & FORMAT(_minDate, "MMM DD, YYYY") & " → " & FORMAT(_maxDate, "MMM DD, YYYY"),
+    "📅 All Dates"
+)
+
+------------------------------------------------------------------------------------------------------------------------
+
+Age Bands = 
+SWITCH(
+    TRUE(),
+    'Dim Patient'[Age] >= 13 && 'Dim Patient'[Age] <= 19, "13-19",
+    'Dim Patient'[Age] >= 20 && 'Dim Patient'[Age] <= 29, "20-29",
+    'Dim Patient'[Age] >= 30 && 'Dim Patient'[Age] <= 39, "30-39",
+    'Dim Patient'[Age] >= 40 && 'Dim Patient'[Age] <= 49, "40-49",
+    'Dim Patient'[Age] >= 50 && 'Dim Patient'[Age] <= 59, "50-59",
+    'Dim Patient'[Age] >= 60 && 'Dim Patient'[Age] <= 69, "60-69",
+    'Dim Patient'[Age] >= 70 && 'Dim Patient'[Age] <= 79, "70-79",
+    'Dim Patient'[Age] >= 80 && 'Dim Patient'[Age] <= 89, "80-89",
+    "Other"
+)
+
+------------------------------------------------------------------------------------------------------------------------
+
+
