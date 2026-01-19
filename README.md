@@ -117,6 +117,6 @@ This page helps identify:
 
 ---
 
-## 📌 Conclusion
+## 📌Conclusion
 This project demonstrates strong capabilities in **Power BI dashboard development, DAX, data modeling, and data storytelling**.  
 The dashboard transforms complex healthcare datasets into meaningful insights through **interactive visuals, clean design, and business-focused analytics**.
