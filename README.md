@@ -1,12 +1,12 @@
 # 🏥 Healthcare Analytics Dashboard 
 
-## 📌 Project Objective
+## 📌Project Objective
 The objective of this project is to design an **interactive Healthcare Analytics Dashboard** that helps stakeholders analyze **patient trends, hospital performance, medical conditions, and billing patterns** over time.  
 The dashboard enables quick decision-making by transforming raw healthcare data into **clear, visual, and actionable insights**.
 
 ---
 
-## ❗ Business Problem Statement
+## ❗Business Problem Statement
 Healthcare organizations manage large volumes of patient and financial data, making it challenging to:
 
 - Track patient volume across multiple hospitals
@@ -20,7 +20,7 @@ This dashboard addresses these challenges by providing a **centralized, interact
 
 ---
 
-## 📊 Dashboard Pages Overview
+## 📊Dashboard Pages Overview
 
 ### 🔹 1. Overview Page
 The **Overview** page provides a high-level summary of key healthcare KPIs and performance metrics.
@@ -90,7 +90,7 @@ This page helps identify:
 
 ---
 
-## 📈 Key Insights Generated
+## 📈Key Insights Generated
 - Hypertension is the most common medical condition across hospitals
 - Certain hospitals contribute significantly more to patient admissions
 - Middle-age groups (30–59) show the highest patient volume
@@ -99,7 +99,7 @@ This page helps identify:
 
 ---
 
-## 🧰 Tools & Technologies
+## 🧰Tools & Technologies
 - Microsoft Power BI Desktop
 - DAX (Data Analysis Expressions)
 - Power Query
@@ -108,7 +108,7 @@ This page helps identify:
 
 ---
 
-## 🚀 How to Use the Dashboard
+## 🚀How to Use the Dashboard
 1. Use Month and Year slicers to filter the data
 2. Navigate between pages using Page Navigation buttons
 3. Click the Clear button to reset all filters and selections
