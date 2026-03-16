@@ -1,4 +1,4 @@
-# 🏥Healthcare Analytics Dashboard   
+# 🏥Healthcare Analytics Dashboard
 
 ## 📌Project Objective
 The objective of this project is to design an **interactive Healthcare Analytics Dashboard** that helps stakeholders analyze **patient trends, hospital performance, medical conditions, and billing patterns** over time.  
